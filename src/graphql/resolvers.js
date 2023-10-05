@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const urlKycMs = "http://kyc_ms:3000/kyc-api";
-const urlTransactionsMs = "http://transactions_ms:3002/transactions-api";
-const shipmentUrl = "http://billing_ms:4000/billing-api/";
+const urlKycMs = "http:localhost:3000/kyc-api";
+const urlTransactionsMs = "http://localhost:3002/transactions-api";
+const shipmentUrl = "http://localhost:4000/billing-api/";
 
 // TODO: Review the next urls and their queries and mutations
-const userUrl = "http://localhost:3001/auth-api/user/";
-const companyUrl = "http://localhost:3001/auth-api/company/";
+const userUrl = "http://localhost:8080/auth-api/user";
+const companyUrl = "http://localhost:8080/auth-api/company";
 
 export const resolvers = {
   Query: {
@@ -40,14 +40,16 @@ export const resolvers = {
       const { document } = args;
       const user = await axios
         .get(userUrl + "/get/" + document)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return user;
     },
     companyByDocument: async (root, args) => {
       const { document } = args;
+      console.log(document);
       const shipments = await axios
         .get(companyUrl + "/get/" + document)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
+      console.log(shipments);
       return shipments;
     },
     // Shipments
@@ -118,42 +120,42 @@ export const resolvers = {
       const { document } = { args };
       const response = await axios
         .delete(userUrl + "/delete" + document)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return response;
     },
-    signUpUser: async (root, args) => {
+    signInUser: async (root, args) => {
       const { user } = { ...args };
       const response = await axios
         .post(userUrl + "/signin", user)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return response;
     },
     signUpUser: async (root, args) => {
       const { user } = { ...args };
       const response = await axios
         .post(userUrl + "/signup", user)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return response;
     },
     updateUser: async (root, args) => {
       const { document } = { args };
       const response = await axios
         .put(userUrl + "/update" + document)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return response;
     },
     signInCompany: async (root, args) => {
       const { company } = { ...args };
       const response = await axios
         .post(companyUrl + "/signin", company)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return response;
     },
     signUpCompany: async (root, args) => {
       const { company } = { ...args };
       const response = await axios
         .post(companyUrl + "/signup", company)
-        .then((res) => res.data.data);
+        .then((res) => res.data);
       return response;
     },
 

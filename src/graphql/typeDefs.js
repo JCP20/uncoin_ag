@@ -7,8 +7,8 @@ export const typeDefs = gql`
     getTransactionsByUserId(id: ID!): [Transaction]
     getTransactionById(id: ID!): Transaction
     # Users
-    userByDocument(document: Int): User!
-    companyByDocument(document: Int): Company!
+    userByDocument(document: Int): User
+    companyByDocument(document: Int): Company
     # Shipments
     allShipments: [Shipment]!
     shipmentsById(shipmentId: String): Shipment!
@@ -24,24 +24,21 @@ export const typeDefs = gql`
     createChargeOrder(input: ChargeOrderInput): Order
     # Users
     deleteUser(document: Int): User
-    signInUser(user_name: String, document: Int, password: String): User
+    signInUser(userName: String, document: Int, password: String): User
     signUpUser(
-      user_name: String
-      user_lastname: String
+      userName: String
+      userLastName: String
       document: Int
-      balance: Float
       password: String
-      enable: Boolean
     ): User
     updateUser(document: Int): User
     signInCompany(
-      company_name: String
-      document: Int
+      nit: Int
       password: String
     ): Company
     signUpCompany(
-      company_name: String
-      document: Int
+      companyName: String
+      nit: Int
       balance: Float
       password: String
     ): Company
@@ -105,20 +102,23 @@ export const typeDefs = gql`
 
   # ----------- KYC -----------
   type User {
-    _id: ID
+    id: ID
     userName: String
-    userLastname: String
+    userLastName: String
     password: String
     document: Int
     balance: Float
+    enabled: Boolean
+    token: String
   }
 
   type Company {
-    _id: ID
+    id: ID
     companyName: String
     password: String
-    NIT: Int
+    nit: Int
     balance: Float
+    token: String
   }
 
   type Shipment {
